@@ -22,19 +22,16 @@ class BaseHandler(webapp2.RequestHandler):
     def render_template(self, view_filename, params=None):
         if not params:
             params = {}
+        piskotek = self.request.cookies.get('piskotek')
+        if piskotek:
+            params['piskotek'] = True
         template = jinja_env.get_template(view_filename)
         return self.response.out.write(template.render(params))
 
 
 class MainHandler(BaseHandler):
     def get(self):
-
-        params = {}
-        piskotek = self.request.cookies.get('piskotek')
-        if piskotek:
-            params['piskotek'] = True
-
-        return self.render_template("home.html", params=params)
+        return self.render_template("home.html")
 
 class CookieHandler(BaseHandler):
     def post(self):
