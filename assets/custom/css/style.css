@@ -1,3 +1,111 @@
-body {
-    background-color: red;
+.clearfix:after {
+   content: " ";
+   display: block;
+   height: 0;
+   clear: both;
+    }
+
+.topic-list {
+    width: 100%;
+}
+
+.topic-title, .topic-icon, .topic-info {
+    display: inline-block;
+}
+
+.topic-list h3, .topic-list p {
+    margin: 0;
+    padding: 0;
+}
+
+.single-topic {
+
+    width: 100%;
+    border: 3px solid #EEEEEE;
+    border-radius: 6px;
+    margin-bottom: 7px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    display: none;
+    position: relative;
+    color: inherit;
+    text-decoration: none;
+
+}
+
+.topic-icon {
+    width: 10%;
+    max-width: 40px;
+    text-align: center;
+
+}
+
+.topic-icon i {
+   font-size: 20px;
+    position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.topic-info {
+    float: right;
+
+}
+
+.topic-replies, .topic-date {
+    display: inline-block;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.single-topic:hover {
+    background: #F8F8F8;
+    text-decoration: none;
+}
+
+.fade-in {
+    animation: fade-in 0.25s linear;
+    display: block;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        top: 30px;
+    }
+    to {
+        opacity: 1;
+        top: 0;
+    }
+}
+
+
+/* Single topic page */
+
+.jumbotron.topic-top-level {
+    padding-top: 40px;
+    padding-bottom: 20px;
+
+}
+
+.topic-top-level .created-at {
+    float: right;
+}
+
+.topic-top-level h2, .topic-top-level p {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.topic-top-level .user-email {
+    font-size: 16px;
+}
+
+.topic-contents {
+    margin-bottom: 30px;
+}
+
+.topic-footer button {
+    float: right;
 }

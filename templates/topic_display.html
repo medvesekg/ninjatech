@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Viewing topic: {{topic.title}}{% endblock title %}
+
+{% block content %}
+<h1><a href="/">Ninja Tech Forum</a> >> {{topic.title}}</h1>
+
+<div class="jumbotron topic-top-level">
+    <div class="topic-header">
+        <h2>{{topic.title}}</h2>
+        <p class="created-at">{{ topic.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p><br>
+        <p class="user-email">{{topic.user_email}}</p>
+
+    </div>
+    <hr>
+    <div class="topic-contents">
+        <p>{{topic.content}}</p>
+    </div>
+    <div class="topic-footer clearfix">
+        <button class="btn btn-success">Reply</button>
+    </div>
+</div>
+{% endblock content %}

@@ -8,8 +8,10 @@
 
     <title>{% block title %}{% endblock title%} - Ninja Tech Forum</title>
 
-    <!-- Bootstrap -->
+    <!-- Css -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/custom/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -56,12 +58,39 @@
             {% block content %}
             {% endblock content %}
 
+
+            <div class="topic-list">
+
+                {% for topic in topics %}
+
+                <a class="single-topic" href="/topic/view/{{topic.key.id()}}">
+                    <div class="topic-icon">
+                        <i class="fa fa-info"></i>
+                    </div>
+                    <div class="topic-title">
+                        <h3>{{topic.title}}</h3>
+                        <p>{{topic.user_email}}</p>
+                    </div>
+                    <div class="topic-info">
+                        <div class="topic-replies">Replies <br> 0</div>
+                        <div class="topic-date">Posted on <br>{{ topic.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                    </div>
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+
         </div>
+
+
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/assets/custom/js/scripts.js"></script>
 </body>
 </html>
