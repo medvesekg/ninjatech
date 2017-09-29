@@ -5,10 +5,8 @@
 <h1>Doma</h1>
 {% if user %}
     Dobrodošel {{ user.email() }}
-    <a href="{{logout_url}}">Odjavi se</a>
-{% else %}
-<a href="{{login_url}}">Prijava</a>
 {% endif %}
+
 
 <div class="jumbotron">
     <h1>Ninja Tech Forum</h1>
