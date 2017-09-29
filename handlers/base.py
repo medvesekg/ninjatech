@@ -19,9 +19,7 @@ class BaseHandler(webapp2.RequestHandler):
     def render(self, template, **kw):
         return self.write(self.render_str(template, **kw))
 
-    def render_template(self, view_filename, params=None):
-        if not params:
-            params = {}
+    def render_template(self, view_filename, params={}):
         piskotek = self.request.cookies.get('piskotek')
         if piskotek:
             params['piskotek'] = True
@@ -29,13 +27,5 @@ class BaseHandler(webapp2.RequestHandler):
         return self.response.out.write(template.render(params))
 
 
-class MainHandler(BaseHandler):
-    def get(self):
-        return self.render_template("home.html")
 
-class CookieHandler(BaseHandler):
-    def post(self):
 
-        self.response.set_cookie("piskotek", "nastavljen") # self.response.set_cookie(ime_piskotka, vrednost_piskotka)
-
-        return self.redirect('/')
