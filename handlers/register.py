@@ -6,7 +6,8 @@ import time
 
 class RegisterHandler(BaseHandler):
     def get(self):
-        return self.render_template("register.html")
+        params={}
+        return self.render_template("register.html", params=params)
 
     def post(self):
 

@@ -7,7 +7,7 @@ from models.user import User
 from classes.CustomUser import CustomUser
 
 template_dir = os.path.join(os.path.dirname(__file__), "../templates")
-jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False, cache_size=0)
 
 
 class BaseHandler(webapp2.RequestHandler):

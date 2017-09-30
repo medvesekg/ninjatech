@@ -6,7 +6,8 @@ import time
 
 class LoginHandler(BaseHandler):
     def get(self):
-        return self.render_template("login.html")
+        params={}
+        return self.render_template("login.html", params=params)
 
     def post(self):
 

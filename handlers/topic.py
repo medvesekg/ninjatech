@@ -8,7 +8,8 @@ from classes.CustomUser import CustomUser
 
 class TopicAdd(BaseHandler):
     def get(self):
-        return self.render_template("topic_add.html")
+        params={}
+        return self.render_template("topic_add.html",params=params)
 
     def post(self):
 

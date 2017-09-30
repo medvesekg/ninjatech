@@ -11,3 +11,4 @@ class LogoutHandler(BaseHandler):
             session[0].key.delete()
             self.response.delete_cookie("token")
             return self.redirect("/")
+
