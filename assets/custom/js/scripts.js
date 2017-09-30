@@ -9,10 +9,13 @@ var animate = setInterval (function() {
 
     i++;
 
-    if (i > topics.length) {
+    if (i >= topics.length) {
 
         clearInterval(animate);
 
     }
 
+
+
 }, 250);
+
