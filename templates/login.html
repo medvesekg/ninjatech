@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<h1>Login</h1>
+<div class="container">
+    <a href="{{login_url}}"><img src="assets/img/googlesignin.png" id="google-signin"></a>
+
+    <form method="post">
+      <label><b>Email or username</b></label>
+      <input type="text" placeholder="Your email" name="email" required>
+
+      <label><b>Password</b></label>
+      <input type="password" placeholder="Your password" name="psw" required>
+      <br>
+        <p>Not registered? <a href="/register">Create an account now!</a></p>
+      <button type="submit" class="btn btn-success">Login</button>
+    </form>
+
+  </div>
+
+{% endblock content %}

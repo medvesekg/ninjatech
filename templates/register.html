@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Register a new account{% endblock title %}
+
+{% block content %}
+<h1>Register a new account</h1>
+<div class="container">
+
+
+    <form method="post">
+      <label><b>Email or username</b></label>
+      <input type="text" placeholder="Your email" name="email" required>
+
+      <label><b>Password</b></label>
+      <input type="password" placeholder="Password" name="psw" required>
+      <label><b>Re-type password</b></label>
+      <input type="password" placeholder="Password" name="psw_check" required>
+
+      <button type="submit" class="btn btn-success">Sign up</button>
+    </form>
+
+  </div>
+
+{% endblock content %}
+</body>
+</html>

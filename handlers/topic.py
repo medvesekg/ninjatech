@@ -1,6 +1,9 @@
 from handlers.base import BaseHandler
 from google.appengine.api import users
 from models.topic import Topic
+from models.session import Session
+from models.user import User
+from classes.CustomUser import CustomUser
 
 
 class TopicAdd(BaseHandler):
@@ -8,7 +11,15 @@ class TopicAdd(BaseHandler):
         return self.render_template("topic_add.html")
 
     def post(self):
+
+        
+        user_token = self.request.cookies.get("token")
+        session = Session.query(Session.token == user_token).fetch()
         user = users.get_current_user()
+
+        if session:
+            user = User.query(User.email == session[0].user_email).fetch()
+            user = CustomUser(user[0].email)
 
         if not user:
             return self.write("Please login before you're allowed to post a topic.")

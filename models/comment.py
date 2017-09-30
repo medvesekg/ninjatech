@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 
 class Comment(ndb.Model):
-    user_email = ndb.StringProperty
+    user_email = ndb.StringProperty()
     content = ndb.TextProperty()
     topic_id = ndb.IntegerProperty()
     topic_title = ndb.StringProperty()
