@@ -3,6 +3,7 @@ from models.user import User
 from models.session import Session
 from hashlib import sha256
 import time
+import cgi
 
 class RegisterHandler(BaseHandler):
     def get(self):
@@ -12,7 +13,7 @@ class RegisterHandler(BaseHandler):
     def post(self):
 
         # Get the POST data
-        email = self.request.get("email").strip()
+        email = cgi.escape(self.request.get("email")).strip()
         psw = self.request.get("psw").strip()
         psw_check = self.request.get("psw_check").strip()
 

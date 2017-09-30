@@ -4,7 +4,7 @@ from models.topic import Topic
 from models.session import Session
 from models.user import User
 from classes.CustomUser import CustomUser
-
+import cgi
 
 class TopicAdd(BaseHandler):
     def get(self):
@@ -25,8 +25,11 @@ class TopicAdd(BaseHandler):
         if not user:
             return self.write("Please login before you're allowed to post a topic.")
 
-        title = self.request.get("title")
-        text = self.request.get("text")
+        title = cgi.escape(self.request.get("title").strip())
+        text = cgi.escape(self.request.get("text").strip())
+
+        if title == "" or text == "":
+            return self.write("Please fill out all the fields.")
 
         new_topic = Topic(title=title, content=text, user_email=user.email())
         new_topic.put()
