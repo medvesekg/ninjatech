@@ -59,32 +59,13 @@
             {% endblock content %}
 
 
-            <div class="topic-list">
 
-                {% for topic in topics %}
-
-                <a class="single-topic" href="/topic/view/{{topic.key.id()}}">
-                    <div class="topic-icon">
-                        <i class="fa fa-info"></i>
-                    </div>
-                    <div class="topic-title">
-                        <h3>{{topic.title}}</h3>
-                        <p>{{topic.user_email}}</p>
-                    </div>
-                    <div class="topic-info">
-                        <div class="topic-replies">Replies <br> 0</div>
-                        <div class="topic-date">Posted on <br>{{ topic.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</div>
-                    </div>
-                </a>
-
-                {% endfor %}
-
-            </div>
 
 
         </div>
 
-
+    {% block after_content %}
+        {% endblock after_content%}
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

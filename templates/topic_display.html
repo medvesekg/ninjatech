@@ -17,7 +17,39 @@
         <p>{{topic.content}}</p>
     </div>
     <div class="topic-footer clearfix">
-        <button class="btn btn-success">Reply</button>
+        <a href="#reply" class="btn btn-success">Reply</a>
     </div>
 </div>
+
+{% for comment in comments %}
+
+    <div class="comment">
+        <div class="comment-header clearfix">
+           <p class="comment-email">{{comment.user_email}}</p>
+            <p class="comment-date">{{comment.created_at.strftime('%Y-%m-%d %H:%M:%S')}}</p>
+        </div>
+        <hr>
+        <div class="comment-body">
+            <p>{{comment.content}}</p>
+        </div>
+    </div>
+
+{% endfor %}
+
+
 {% endblock content %}
+
+
+
+
+{% block after_content %}
+<div class="container">
+    <div id="reply">
+        <form method="post" action="/new_comment/{{topic_id}}">
+            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+            <textarea name="comment_content"></textarea>
+            <button type="submit" class="btn btn-success">Reply</button>
+        </form>
+    </div>
+</div>
+{% endblock after_content %}

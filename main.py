@@ -10,6 +10,7 @@ from handlers.login import LoginHandler
 from handlers.register import RegisterHandler
 from handlers.checkuser import CheckUser
 from handlers.logout import LogoutHandler
+from handlers.comment import NewComment
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
@@ -20,4 +21,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/register', RegisterHandler),
     webapp2.Route('/checkuser', CheckUser),
     webapp2.Route('/logout', LogoutHandler),
+    webapp2.Route('/new_comment/<topic_id>', NewComment)
 ], debug=True)

@@ -5,6 +5,11 @@
    clear: both;
     }
 
+.container {
+    margin: 0 auto;
+
+}
+
 .topic-list {
     width: 100%;
 }
@@ -106,11 +111,54 @@
     margin-bottom: 30px;
 }
 
-.topic-footer button {
+.topic-footer a {
     float: right;
 }
 
+#reply {
+    float: right;
+}
 
+#reply textarea {
+    display: block;
+    height: 100px;
+    width: 300px;
+
+}
+
+#reply button {
+    float: right;
+    margin-top: 10px;
+}
+
+
+
+.comment {
+    margin-left: auto;
+    max-width: 1000px;
+    width: 80%;
+    border: 3px solid #EEEEEE;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    transition: background 0.3s ease-in-out;
+    position: relative;
+    color: inherit;
+    text-decoration: none;
+    padding: 10px;
+
+}
+
+.comment-date {
+    float: right;
+}
+
+.comment-email {
+    float: left;
+}
+
+.comment hr {
+    margin-top: 0;
+}
 
 /* Login form */
 #google-signin {

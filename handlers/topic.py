@@ -5,10 +5,16 @@ from models.session import Session
 from models.user import User
 from classes.CustomUser import CustomUser
 import cgi
+from models.comment import Comment
+from classes.CSRF import CSRF
 
 class TopicAdd(BaseHandler):
     def get(self):
         params={}
+
+        csrf_token = CSRF.generate_token()
+        params['csrf_token'] = csrf_token
+
         return self.render_template("topic_add.html",params=params)
 
     def post(self):
@@ -31,6 +37,10 @@ class TopicAdd(BaseHandler):
         if title == "" or text == "":
             return self.write("Please fill out all the fields.")
 
+
+        if not CSRF.validate_token(self.request.get("csrf_token")):
+            return self.write("CSRF fail")
+
         new_topic = Topic(title=title, content=text, user_email=user.email())
         new_topic.put()
 
@@ -41,9 +51,17 @@ class TopicAdd(BaseHandler):
 class TopicDisplay(BaseHandler):
     def get(self, topic_id):
 
+        csrf_token = CSRF.generate_token()
+
         topic = Topic.get_by_id(int(topic_id))
 
         params = {}
         params['topic'] = topic
+        params['topic_id'] = topic_id
+        params['csrf_token'] = csrf_token
+
+        comments = Comment.query(Comment.topic_id == int(topic_id)).order(Comment.created_at).fetch()
+
+        params['comments'] = comments
 
         return self.render_template("topic_display.html", params=params)
