@@ -8,6 +8,7 @@ from models.user import User
 import cgi
 from classes.CSRF import CSRF
 
+
 class NewComment(BaseHandler):
     def post(self, topic_id):
 
@@ -20,7 +21,7 @@ class NewComment(BaseHandler):
             user = CustomUser(user[0].email)
 
         if not user:
-            return self.write("Please login before you're allowed to post a topic.")
+            return self.write("Please login before you're allowed to post a comment.")
 
 
         comment_content = cgi.escape(self.request.get("comment_content")).strip()
@@ -33,9 +34,10 @@ class NewComment(BaseHandler):
 
         topic_id = int(topic_id)
 
-        topic = Topic.get_by_id(topic_id)
 
-        new_comment = Comment(user_email=user.email(), content=comment_content, topic_id=topic_id, topic_title=topic.title)
-        new_comment.put()
+
+
+        Comment.create_comment(user=user, topic_id=topic_id, comment_content=comment_content)
+
 
         return self.redirect("/topic/view/" + str(topic_id))
