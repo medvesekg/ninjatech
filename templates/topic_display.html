@@ -3,29 +3,42 @@
 {% block title %}Viewing topic: {{topic.title}}{% endblock title %}
 
 {% block content %}
+
 <h1><a href="/">Ninja Tech Forum</a> >> {{topic.title}}</h1>
 
 <div class="jumbotron topic-top-level">
     <div class="topic-header">
         <h2>{{topic.title}}</h2>
         <p class="created-at">{{ topic.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p><br>
-        <p class="user-email">{{topic.user_email}}</p>
+        <p class="user-email"><a href="/users/{{topic_author.key.id()}}">{{topic.user_email}}</a></p>
 
     </div>
     <hr>
     <div class="topic-contents">
         <p>{{topic.content}}</p>
     </div>
+
     <div class="topic-footer clearfix">
-        <a href="#reply" class="btn btn-success">Reply</a>
+        {% if user and user.is_active %}
+            {% if user.is_current_user_admin() or user.is_author(topic.key.id()) %}
+            <button type="button" class="btn btn-danger" class="delete-button" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+            {% endif %}
+            {% if not user.is_subscribed(topic.key.id()) %}
+            <a href="/topic/{{topic.key.id()}}/subscribe" class="btn btn-warning">Subscribe</a>
+            {% endif %}
+            {% if user.is_subscribed(topic.key.id()) %}
+            <a href="/topic/{{topic.key.id()}}/subscribe" class="btn btn-default">Unsubscribe</a>
+            {% endif %}
+            <a href="#reply" class="btn btn-success">Reply</a>
+        {% endif %}
     </div>
 </div>
 
 {% for comment in comments %}
 
-    <div class="comment">
+    <div class="comment" id="{{comment.key.id()}}">
         <div class="comment-header clearfix">
-           <p class="comment-email">{{comment.user_email}}</p>
+            <p class="comment-email">{{comment.user_email}}</a></p>
             <p class="comment-date">{{comment.created_at.strftime('%Y-%m-%d %H:%M:%S')}}</p>
         </div>
         <hr>
@@ -43,13 +56,39 @@
 
 
 {% block after_content %}
-<div class="container">
-    <div id="reply">
-        <form method="post" action="/new_comment/{{topic_id}}">
-            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
-            <textarea name="comment_content"></textarea>
-            <button type="submit" class="btn btn-success">Reply</button>
-        </form>
+
+    {% if user and user.is_active %}
+    <div class="container">
+
+        <div id="reply-div">
+            <h3>Add a new reply</h3>
+            <hr>
+            <form method="post" action="/new_comment/{{topic_id}}" id="reply">
+                <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+                <textarea name="comment_content"></textarea>
+                <button type="submit" class="btn btn-success">Reply</button>
+            </form>
+        </div>
     </div>
-</div>
+    {% endif %}
+
 {% endblock after_content %}
+
+{% block modal %}
+
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Are you like, really sure you want to do that?</h4>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-danger" href="/topic/{{topic.key.id()}}/delete">For sure</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Not really</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal%}

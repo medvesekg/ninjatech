@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Viewing user: {{user_profile.email}}{% endblock title %}
+
+{% block content %}
+<h1><a href="/">Ninja Tech Forum</a> >> <a href="/users">Users</a> >> {{user_profile.email}}</h1>
+
+<div class="jumbotron topic-top-level">
+
+        <h2>{{user_profile.email}}</h2>
+    <br>
+    <br>
+    <ul>
+        {% if user_profile.created_at != None %}
+    <li>Member since: {{ user_profile.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</li>
+        {% endif %}
+    <li>Number of topics: {{ number_of_topics }}</li>
+    <li>Number of comments: {{ number_of_comments }}</li>
+    </ul>
+
+
+</div>
+<h3 class="comment-list-title"> {{user_profile.email}}'s comments</h3>
+{% for comment in comments %}
+    <a class="comment" href="/topic/view/{{ comment.topic_id }}#{{comment.key.id()}}">
+        <div class="comment-header clearfix">
+           <p class="comment-email">In: {{comment.topic_title}}</p>
+            <p class="comment-date">{{comment.created_at.strftime('%Y-%m-%d %H:%M:%S')}}</p>
+        </div>
+        <hr>
+        <div class="comment-body">
+            <p>{{comment.content}}</p>
+        </div>
+    </a>
+
+{% endfor %}
+{% endblock content %}

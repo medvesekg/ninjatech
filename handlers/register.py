@@ -4,9 +4,21 @@ from models.session import Session
 from hashlib import sha256
 import time
 import cgi
+from classes.CustomUser import CustomUser
+from google.appengine.api import taskqueue, memcache
+import re
+import uuid
+
 
 class RegisterHandler(BaseHandler):
     def get(self):
+
+        user = CustomUser.get_current_user(self)
+
+        # If user is already logged in redirect
+        if user:
+            return self.redirect("/")
+
         params={}
         return self.render_template("register.html", params=params)
 
@@ -29,6 +41,10 @@ class RegisterHandler(BaseHandler):
         if User.query(User.email == email).fetch():
             return self.write("That user already exists. Please use a different email.")
 
+        # Check if email is valid
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return self.write("Please enter a valid email")
+
         # Hash the password
         salt = "d9be95247"
         password = sha256(salt + psw + salt).hexdigest()
@@ -37,6 +53,15 @@ class RegisterHandler(BaseHandler):
         new_user = User(email=email, password=password)
         new_user.put()
 
+        # Send validation email
+        user_validation_token = str(uuid.uuid4())
+        memcache.add(user_validation_token, email, 86400)
+        params={
+            "email" : email,
+            "subject" : "Please validate your email address",
+            "body" : "Visit this link - http://ninja-tech.appspot.com/validate/%s to validate your email and activate your user account." % str(user_validation_token)
+        }
+        taskqueue.add(url="/task/send-validation-email", params=params)
 
         #
         #  Log the user in

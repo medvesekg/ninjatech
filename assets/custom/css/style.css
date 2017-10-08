@@ -68,6 +68,11 @@
     text-decoration: none;
 }
 
+a.comment:hover {
+    background: #F8F8F8;
+    text-decoration: none;
+}
+
 .fade-in {
     animation: fade-in 0.25s linear;
     display: block;
@@ -115,18 +120,18 @@
     float: right;
 }
 
-#reply {
+#reply-div {
     float: right;
 }
 
-#reply textarea {
+#reply-div textarea {
     display: block;
     height: 100px;
     width: 300px;
 
 }
 
-#reply button {
+#reply-div button {
     float: right;
     margin-top: 10px;
 }
@@ -140,11 +145,12 @@
     border: 3px solid #EEEEEE;
     border-radius: 6px;
     margin-bottom: 12px;
-    transition: background 0.3s ease-in-out;
+    transition: background 0.2s ease-in-out;
     position: relative;
     color: inherit;
     text-decoration: none;
     padding: 10px;
+    display: block;
 
 }
 
@@ -177,4 +183,13 @@ input[type=text], input[type=password] {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+}
+
+.topic-footer a, .topic-footer button {
+    margin: 0 10px;
+    float: right;
+}
+
+.comment-list-title {
+    text-align: right;
 }

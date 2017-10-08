@@ -2,8 +2,6 @@ import os
 import jinja2
 import webapp2
 from google.appengine.api import users
-from models.session import Session
-from models.user import User
 from classes.CustomUser import CustomUser
 
 template_dir = os.path.join(os.path.dirname(__file__), "../templates")
@@ -24,32 +22,16 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render_template(self, view_filename, params={}):
 
-        # Cookies
+        # Check if cookie notice should be displayed
         piskotek = self.request.cookies.get('piskotek')
         if piskotek:
             params['piskotek'] = True
 
-        #
         # Check if user is logged in
-        #
-
-        # Check if user is logged in via google or has a session token
-        user_token = self.request.cookies.get("token")
-        session = Session.query(Session.token == user_token).fetch()
-        user = users.get_current_user()
-
-        # Google Login
+        user = CustomUser.get_current_user(self)
         if user:
             params['user'] = user
-            params['logout_url'] = users.create_logout_url('/')
-
-        # Custom Login
-        elif session:
-            user = User.query(User.email == session[0].user_email).fetch()
-            params['user'] = CustomUser(user[0].email)
-
             params['logout_url'] = "/logout"
-
 
         else:
             params['login_url'] = users.create_login_url('/checkuser')

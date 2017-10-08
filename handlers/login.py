@@ -2,10 +2,16 @@ from handlers.base import BaseHandler
 from models.user import User
 from models.session import Session
 from hashlib import sha256
+from classes.CustomUser import CustomUser
 import time
 
 class LoginHandler(BaseHandler):
     def get(self):
+
+        # Redirect if user is already logged in
+        if CustomUser.get_current_user(self):
+            return self.redirect("/")
+
         params={}
         return self.render_template("login.html", params=params)
 

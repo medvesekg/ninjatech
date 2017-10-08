@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}All users{% endblock title %}
+
+{% block content %}
+<h1><a href="/">Ninja Tech Forum</a> >> <a href="/users">Users</a></h1>
+
+
+
+<h2>Listing all users</h2>
+<ul>
+{% for single_user in all_users %}
+
+    <li><a href="/users/{{single_user.key.id()}}">{{single_user.email}}</a></li>
+
+{% endfor %}
+</ul>
+{% endblock content %}

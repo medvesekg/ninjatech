@@ -21,6 +21,8 @@ libraries:
 - name: markupsafe
   version: latest
 
-env_variables:
- SENDGRID_API_KEY: "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"
+env_variables
+ SENDGRID_API_KEY: "Your API key here"
+
+
 

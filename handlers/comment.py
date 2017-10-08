@@ -1,43 +1,32 @@
 from handlers.base import BaseHandler
 from models.comment import Comment
-from models.topic import Topic
-from models.session import Session
-from classes.CustomUser import CustomUser
-from google.appengine.api import users
-from models.user import User
 import cgi
 from classes.CSRF import CSRF
+from classes.CustomUser import CustomUser
 
 
 class NewComment(BaseHandler):
     def post(self, topic_id):
 
-        user_token = self.request.cookies.get("token")
-        session = Session.query(Session.token == user_token).fetch()
-        user = users.get_current_user()
+        # Check if an user is logged in
+        user = CustomUser.get_current_user(self)
 
-        if session:
-            user = User.query(User.email == session[0].user_email).fetch()
-            user = CustomUser(user[0].email)
-
-        if not user:
+        if not user or not user.is_active:
             return self.write("Please login before you're allowed to post a comment.")
 
-
+        # Escape the comment, strip whitespace
         comment_content = cgi.escape(self.request.get("comment_content")).strip()
 
+        # Check if comment is empty
         if comment_content == "":
             return self.write("Please fill out all fields.")
 
+        # Validate CSRF token
         if not CSRF.validate_token(self.request.get('csrf_token')):
             return self.write("CSRF fail")
 
-        topic_id = int(topic_id)
+        # Create new comment
+        Comment.create_comment(user=user, topic_id=int(topic_id), comment_content=comment_content)
 
-
-
-
-        Comment.create_comment(user=user, topic_id=topic_id, comment_content=comment_content)
-
-
+        # Redirect back to current topic
         return self.redirect("/topic/view/" + str(topic_id))

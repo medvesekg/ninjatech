@@ -33,9 +33,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">About</a></li>
+                    <li><a href="/users">Users</a></li>
                       {% if user %}
-                      <li><a href="#">{{user.email()}}</a></li>
+                      <li><a href="/users/{{user.id}}">{{user.email()}}</a></li>
                       <li><a href="/topic/add">Add new topic</a></li>
                       <li><a href="{{logout_url}}">Logout</a></li>
                       {% else %}
@@ -45,6 +45,14 @@
                 </div><!-- /.navbar-collapse -->
               </div><!-- /.container-fluid -->
             </nav>
+
+            {% if user %}
+                {% if not user.is_active %}
+                <div class="alert alert-warning">
+                    Your user account is not active. You will not be able to post messages. Please check your email to activate your account.
+                </div>
+                {% endif %}
+            {% endif %}
 
             {% if not piskotek %}
             <div class="alert alert-danger" role="alert">
@@ -67,7 +75,8 @@
     {% block after_content %}
         {% endblock after_content%}
 
-
+    {% block modal %}
+        {% endblock modal %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

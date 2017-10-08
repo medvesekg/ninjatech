@@ -21,8 +21,18 @@ indexes:
   - name: created_at
     direction: desc
 
+- kind: Comment
+  properties:
+  - name: user_email
+  - name: deleted
+
 - kind: Topic
   properties:
   - name: deleted
   - name: created_at
     direction: desc
+
+- kind: Topic
+  properties:
+  - name: user_email
+  - name: deleted
