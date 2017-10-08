@@ -59,6 +59,7 @@ docs/_build/
 # PyBuilder
 target/
 
-*.yaml
+# yaml
+app.yaml
 
 
