@@ -1,0 +1,5 @@
+cron:
+- description: Permanently delete old delted topics
+  url: /cron/delete-topics
+  schedule: every sunday 06:00
+  timezone: Europe/Ljubljana

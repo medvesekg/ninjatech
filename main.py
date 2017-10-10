@@ -15,6 +15,7 @@ from workers.SendMailWorker import SendMailWorker
 from handlers.delete import DeleteHandler
 from handlers.validate import ValidateEmail
 from handlers.user import UserProfileHandler, UserListHandler
+from crons.delete_topics_cron import DeleteTopicsCron
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
@@ -33,4 +34,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/users/<user_id:\d+>', UserProfileHandler),
     webapp2.Route('/users', UserListHandler),
     webapp2.Route('/topic/<topic_id:\d+>/subscribe', TopicSubscribe),
+    webapp2.Route('/cron/delete-topics', DeleteTopicsCron)
 ], debug=True)
