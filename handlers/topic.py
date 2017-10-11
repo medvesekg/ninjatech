@@ -62,7 +62,7 @@ class TopicDisplay(BaseHandler):
         params['csrf_token'] = csrf_token
         params['topic_author'] = topic_author
 
-        comments = Comment.query(Comment.topic_id == int(topic_id)).order(Comment.created_at).fetch()
+        comments = Comment.query(Comment.topic_id == int(topic_id), Comment.deleted == False).order(Comment.created_at).fetch()
 
         params['comments'] = comments
 

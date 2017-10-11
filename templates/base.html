@@ -35,6 +35,11 @@
                   <ul class="nav navbar-nav navbar-right">
                     <li><a href="/users">Users</a></li>
                       {% if user %}
+                        {% if user.is_subscribed(1) %}
+                        <li><a href="/subscribe">Unsubscribe</a></li>
+                        {% else %}
+                        <li><a data-toggle="modal" data-target="#SubscribeModal" style="cursor:pointer">Subscribe</a></li>
+                        {% endif%}
                       <li><a href="/users/{{user.id}}">{{user.email()}}</a></li>
                       <li><a href="/topic/add">Add new topic</a></li>
                       <li><a href="{{logout_url}}">Logout</a></li>

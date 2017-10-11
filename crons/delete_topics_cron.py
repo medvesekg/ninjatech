@@ -22,3 +22,9 @@ class DeleteTopicsCron(BaseHandler):
             topic.key.delete()
 
 
+        comments = Comment.query(Comment.deleted == True, Comment.created_at <= month_ago).fetch()
+
+        for comment in comments:
+            comment.key.delete()
+
+

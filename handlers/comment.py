@@ -30,3 +30,25 @@ class NewComment(BaseHandler):
 
         # Redirect back to current topic
         return self.redirect("/topic/view/" + str(topic_id))
+
+class CommentDelete(BaseHandler):
+    def post(self, comment_id):
+
+        user = CustomUser.get_current_user(self)
+
+        if not user:
+            return self.redirect("/")
+
+        if not user.is_current_user_admin() and not user.is_comment_author(int(comment_id)):
+            return self.redirect("/")
+
+        if not CSRF.validate_token(self.request.get('csrf_token')):
+            return self.write("CSRF fail")
+
+        comment = Comment.get_by_id(int(comment_id))
+        topic_id = str(comment.topic_id)
+
+        comment.deleted = True
+        comment.put()
+
+        return self.redirect("/topic/view/" + topic_id)

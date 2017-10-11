@@ -16,6 +16,9 @@ from handlers.delete import DeleteHandler
 from handlers.validate import ValidateEmail
 from handlers.user import UserProfileHandler, UserListHandler
 from crons.delete_topics_cron import DeleteTopicsCron
+from handlers.subscription import SubscriptionHandler
+from crons.subscription_emails_cron import SubscriptionsEmailsCron
+from handlers.comment import CommentDelete
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
@@ -30,9 +33,13 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/task/email-topic-author', SendMailWorker),
     webapp2.Route('/topic/<topic_id:\d+>/delete', DeleteHandler),
     webapp2.Route('/task/send-validation-email', SendMailWorker),
+    webapp2.Route('/task/send-subscription-email', SendMailWorker),
     webapp2.Route('/validate/<token>', ValidateEmail),
     webapp2.Route('/users/<user_id:\d+>', UserProfileHandler),
     webapp2.Route('/users', UserListHandler),
     webapp2.Route('/topic/<topic_id:\d+>/subscribe', TopicSubscribe),
-    webapp2.Route('/cron/delete-topics', DeleteTopicsCron)
+    webapp2.Route('/cron/delete-topics', DeleteTopicsCron),
+    webapp2.Route('/cron/subscription-emails', SubscriptionsEmailsCron),
+    webapp2.Route('/subscribe', SubscriptionHandler),
+    webapp2.Route('/comment/<comment_id:\d+>/delete', CommentDelete),
 ], debug=True)

@@ -193,3 +193,7 @@ input[type=text], input[type=password] {
 .comment-list-title {
     text-align: right;
 }
+
+.comment-footer {
+    text-align: right;
+}

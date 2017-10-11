@@ -3,6 +3,7 @@ from models.user import User
 from google.appengine.api import users
 from models.topic import Topic
 from models.subscription import Subscription
+from models.comment import Comment
 
 class CustomUser(object):
 
@@ -50,6 +51,14 @@ class CustomUser(object):
 
         current_topic = Topic.get_by_id(int(topic_id))
         if (current_topic.user_email == self.str_email):
+            return True
+        else:
+            return False
+
+    def is_comment_author(self, comment_id):
+
+        current_comment = Comment.get_by_id(int(comment_id))
+        if (current_comment.user_email == self.str_email):
             return True
         else:
             return False

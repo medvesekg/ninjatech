@@ -38,24 +38,40 @@ $('a[href*="#"]')
     }
   });
 
+var deleteButtons = document.getElementsByClassName("delete-button")
+var deleteModalForm= document.getElementById("DeleteModal-form")
+
+for (var i = 0; i < deleteButtons.length; i++) {
+
+
+    deleteButtons[i].onclick = function() {
+        deleteModalForm.action = this.dataset.url
+    }
+}
+
 
 var topics = document.getElementsByClassName("single-topic");
 
-topics[0].classList.add('fade-in');
 
-var i = 1;
-var animate = setInterval (function() {
+if(topics[0]) {
 
-    topics[i].classList.add("fade-in");
+    topics[0].classList.add('fade-in');
 
-    i++;
+    var i = 1;
+    var animate = setInterval (function() {
 
-    if (i >= topics.length) {
+        topics[i].classList.add("fade-in");
 
-        clearInterval(animate);
+        i++;
 
-    }
+        if (i >= topics.length) {
+
+            clearInterval(animate);
+
+        }
 
 
 
-}, 250);
+    }, 250);
+
+}

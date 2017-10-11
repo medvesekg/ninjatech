@@ -21,7 +21,7 @@
     <div class="topic-footer clearfix">
         {% if user and user.is_active %}
             {% if user.is_current_user_admin() or user.is_author(topic.key.id()) %}
-            <button type="button" class="btn btn-danger" class="delete-button" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+            <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#DeleteModal" data-url="/topic/{{topic.key.id()}}/delete">Delete</button>
             {% endif %}
             {% if not user.is_subscribed(topic.key.id()) %}
             <a href="/topic/{{topic.key.id()}}/subscribe" class="btn btn-warning">Subscribe</a>
@@ -45,6 +45,14 @@
         <div class="comment-body">
             <p>{{comment.content}}</p>
         </div>
+        <hr>
+        {% if user %}
+            {% if user.is_current_user_admin() or user.is_comment_author(comment.key.id()) %}
+            <div class="comment-footer">
+                <button class="btn btn-danger delete-button" data-toggle="modal" data-target="#DeleteModal" data-url="/comment/{{ comment.key.id() }}/delete">Delete</button>
+            </div>
+            {% endif %}
+        {% endif %}
     </div>
 
 {% endfor %}
@@ -84,8 +92,11 @@
         <h4 class="modal-title" id="myModalLabel">Are you like, really sure you want to do that?</h4>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-danger" href="/topic/{{topic.key.id()}}/delete">For sure</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Not really</button>
+          <form id="DeleteModal-form" method="post">
+              <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+            <input type="submit" class="btn btn-danger" value="Totally">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Not really</button>
+          </form>
       </div>
     </div>
   </div>

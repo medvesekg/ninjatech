@@ -21,6 +21,10 @@ class Comment(ndb.Model):
                               topic_title=topic.title)
         new_comment.put()
 
+        # Update topic updated_at property
+
+        topic.put()
+
         # Build a list of emails to send
 
         email_list = []
