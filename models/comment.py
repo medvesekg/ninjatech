@@ -51,7 +51,7 @@ class Comment(ndb.Model):
             params = {
                 "email" : email,
                 "subject" : "New reply",
-                "body" : u"A topic you follow http://ninja-tech.com/topic/view/{1} - {0} has a new comment.".format(topic.title, topic_id)
+                "body" : u"A topic you follow http://ninja-tech.appspot.com/topic/view/{1} - '{0}' has a new comment.".format(topic.title, topic_id)
             }
 
             taskqueue.add(url="/task/email-topic-author", params=params)
