@@ -40,3 +40,8 @@ If it doesn't recognize GAE path, you have to set it up. See `--gae-lib-root` un
 - [Nose docs](https://nose.readthedocs.org/en/latest/)
 - [GAE handler testing](https://cloud.google.com/appengine/docs/python/tools/handlertesting)
 - [GAE local unit testing](https://cloud.google.com/appengine/docs/python/tools/localunittesting)
+
+
+## Run this
+- nosetests -v --with-gae --gae-lib-root="C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\platform
+\google_appengine" tests

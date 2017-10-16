@@ -5,18 +5,17 @@ import webtest
 
 from google.appengine.ext import testbed
 from google.appengine.api import memcache
-from handlers.topic import TopicAdd, TopicDisplay
-from handlers.delete import DeleteHandler
+from handlers.comment import NewComment, CommentDelete
 from models.topic import Topic
 from models.user import User
+from models.comment import Comment
 
 class TopicTests(unittest.TestCase):
     def setUp(self):
         app = webapp2.WSGIApplication(
             [
-                webapp2.Route('/topic/add', TopicAdd),
-                webapp2.Route('/topic/view/<topic_id:\d+>', TopicDisplay),
-                webapp2.Route('/topic/<topic_id:\d+>/delete', DeleteHandler),
+                webapp2.Route('/new_comment/<topic_id:\d+>', NewComment),
+                webapp2.Route('/comment/<comment_id:\d+>/delete', CommentDelete),
             ])
 
         self.testapp = webtest.TestApp(app)
@@ -45,42 +44,42 @@ class TopicTests(unittest.TestCase):
     def tearDown(self):
         self.testbed.deactivate()
 
-    def test_topic_add(self):
-        # Get
-        get = self.testapp.get('/topic/add')
-        self.assertEqual(get.status_int, 200)
+    def test_comment_add(self):
 
         # Post
         memcache.add(key="abc123", value=True)
+        user = User.query().fetch()[0]
+        topic = Topic.query().fetch()[0]
         params = {
-            'csrf_token': 'abc123',
-            'title': 'Nova tema',
-            'text': 'Neka vsebina.'
+
+            'comment_content': 'Neka vsebina.',
+
+            'csrf_token': "abc123",
         }
-        response = self.testapp.post("/topic/add", params=params)
+        response = self.testapp.post("/new_comment/" + str(topic.key.id()), params=params)
 
-        self.assertEquals(response.status_int, 302)
+        comment = Comment.query().get()
 
+        self.assertEqual(comment.content, "Neka vsebina.")
+
+
+    def test_comment_delete(self):
+        user = User.query().get()
         topic = Topic.query().get()
-        self.assertEquals('Nova tema', Topic.title)
+        test_comment = Comment(user_email=user.email,
+                               user_id=user.key.id(),
+                               content="Test content",
+                               topic_id=topic.key.id(),
+                               topic_title=topic.title)
+        test_comment.put()
 
-    def test_topic_display(self):
-
-        topic = Topic.query().fetch()[0]
-
-        get = self.testapp.get('/topic/view/' + str(topic.key.id()))
-
-    def test_topic_delete(self):
-        topic = Topic.query().fetch()[0]
         memcache.add(key="abc123", value=True)
         params = {
             "csrf_token": "abc123"
         }
 
-        post = self.testapp.post("/topic/" + str(topic.key.id()) + "/delete", params=params)
+        response = self.testapp.post("/comment/" + str(test_comment.key.id()) + "/delete", params=params)
 
-        deleted_topic = Topic.get_by_id(topic.key.id())
 
-        self.assertEqual(deleted_topic.deleted, True)
 
 
