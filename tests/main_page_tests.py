@@ -27,12 +27,18 @@ class MainPageTests(unittest.TestCase):
         # ...
 
         """ Uncomment if you need user (Google Login) and if this user needs to be admin. """
-        os.environ['USER_EMAIL'] = 'some.user@example.com'
+        # os.environ['USER_EMAIL'] = 'some.user@example.com'
         # os.environ['USER_IS_ADMIN'] = '1'
 
     def tearDown(self):
         self.testbed.deactivate()
 
     def test_main_page_handler(self):
-        get = self.testapp.get('/')  # get main handler
-        self.assertEqual(get.status_int, 200)  # if GET request was ok, it should return 200 status code
+        response = self.testapp.get('/')  # get main handler
+        self.assertEqual(response.status_int, 200)  # if GET request was ok, it should return 200 status code
+
+    def test_main_contains_proper_text(self):
+        response = self.testapp.get("/")
+        self.assertIn("Doma", response.body)
+
+
