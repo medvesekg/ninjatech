@@ -197,3 +197,38 @@ input[type=text], input[type=password] {
 .comment-footer {
     text-align: right;
 }
+
+.latest-comment-popup {
+    height: 150px;
+    width: 250px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    padding: 20px;
+
+
+}
+
+.latest-comment-popup::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 15px;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    border-bottom-right-radius: 100%;
+
+
+
+}
+
+.latest-comment-popup.visible {
+    display: block;
+    opacity: 1;
+
+}

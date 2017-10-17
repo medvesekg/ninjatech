@@ -19,6 +19,8 @@ from crons.delete_topics_cron import DeleteTopicsCron
 from handlers.subscription import SubscriptionHandler
 from crons.subscription_emails_cron import SubscriptionsEmailsCron
 from handlers.comment import CommentDelete
+from handlers.stock import StockHandler
+from handlers.ajax import LatestCommentHandler
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
@@ -42,4 +44,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/cron/subscription-emails', SubscriptionsEmailsCron),
     webapp2.Route('/subscribe', SubscriptionHandler),
     webapp2.Route('/comment/<comment_id:\d+>/delete', CommentDelete),
+    webapp2.Route('/ajax/getLatestComment/<topic_id:\d+>', LatestCommentHandler),
+
+
+    webapp2.Route('/stock', StockHandler),
 ], debug=True)

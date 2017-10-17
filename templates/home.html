@@ -17,7 +17,7 @@
 
                 {% for topic in topics %}
 
-                <a class="single-topic" href="/topic/view/{{topic.key.id()}}">
+                <a class="single-topic" href="/topic/view/{{topic.key.id()}}" data-topic_id="{{topic.key.id()}}">
                     <div class="topic-icon">
                         <i class="fa fa-info"></i>
                     </div>
@@ -40,5 +40,15 @@
 {% endblock content %}
 
 {% block modal %}
-
+    <div class="latest-comment-popup">
+        <h5>Latest comment:</h5>
+        <p>"<span id="latestCommentContent"></span>"</p>
+        <small>by <span id="latestCommentUser">User</span></small>
+    </div>
 {% endblock modal%}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock script %}

@@ -38,6 +38,7 @@ $('a[href*="#"]')
     }
   });
 
+/* Delete modal */ 
 var deleteButtons = document.getElementsByClassName("delete-button")
 var deleteModalForm= document.getElementById("DeleteModal-form")
 
@@ -48,6 +49,7 @@ for (var i = 0; i < deleteButtons.length; i++) {
         deleteModalForm.action = this.dataset.url
     }
 }
+
 
 
 var topics = document.getElementsByClassName("single-topic");
@@ -75,3 +77,50 @@ if(topics[0]) {
     }, 250);
 
 }
+
+$("body").css("min-height", $(window).height() + 30 * $(".single-topic").length)
+
+
+
+
+
+var timeout;
+var topic_id;
+$(".single-topic").on("mousemove", function(e) {
+    clearTimeout(timeout);
+    
+    $(".latest-comment-popup").css("left", e.pageX + "px");
+    $(".latest-comment-popup").css("top", e.pageY - 170 + "px");
+    $(".latest-comment-popup").removeClass("visible"); 
+    
+    topic_id = $(this).data("topic_id");
+
+    
+    timeout = setTimeout(function(){
+       
+        
+        $.getJSON("/ajax/getLatestComment/" + topic_id, function(data) {
+           
+             
+            $("#latestCommentContent").html(data.content);
+            $("#latestCommentUser").html(data.email);
+            
+        });
+        
+        
+        
+        $(".latest-comment-popup").addClass("visible");
+        
+        
+        
+    }, 500);
+});
+
+$(".single-topic").on("mouseout", function() {
+    clearTimeout(timeout);
+    $(".latest-comment-popup").removeClass("visible");
+})
+
+
+
+
