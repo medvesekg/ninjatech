@@ -5,10 +5,12 @@ from hashlib import sha256
 import time
 import cgi
 from classes.CustomUser import CustomUser
-from google.appengine.api import taskqueue, memcache
+from google.appengine.api import taskqueue, memcache, urlfetch
 import re
 import uuid
-
+import os
+from urllib import urlencode
+import json
 
 class RegisterHandler(BaseHandler):
     def get(self):
@@ -44,6 +46,19 @@ class RegisterHandler(BaseHandler):
         # Check if email is valid
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return self.write("Please enter a valid email")
+
+        # Validate recaptcha
+        payload = {'secret': os.environ.get("RECAPTCHA_KEY"),
+                   'response': self.request.get("g-recaptcha-response"),
+                  }
+
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        result = urlfetch.fetch(url="https://www.google.com/recaptcha/api/siteverify", headers=headers, payload=urlencode(payload), method=urlfetch.POST)
+
+        recaptcha_response = json.loads(result.content)
+
+        if not recaptcha_response['success']:
+            return self.write("Please verify you are not a robot")
 
         # Hash the password
         salt = "d9be95247"

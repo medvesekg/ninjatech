@@ -9,8 +9,9 @@ class MainHandler(BaseHandler):
 
         params = {}
         # Get all the topics
-        topics = Topic.query(Topic.deleted == False).order(-Topic.created_at).fetch()
+        topics = Topic.query(Topic.deleted == False).order(-Topic.created_at).fetch(limit=20)
         params['topics'] = topics
+        params['number_of_topics'] = len(topics)
 
         replies = {}
         # Get the reply count for each topic

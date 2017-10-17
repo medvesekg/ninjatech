@@ -7,7 +7,7 @@ class LatestCommentHandler(BaseHandler):
 
         # Find latest comment in given topic
         comments = Comment.query(Comment.topic_id == int(topic_id)).order(-Comment.created_at).fetch()
-     
+
         # If no comments are found return this message
         if not comments:
             data = {"email": "", "content": "This topic has no comments yet."}

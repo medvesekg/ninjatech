@@ -2,6 +2,10 @@
 
 {% block title %}Add new topic{% endblock title %}
 
+{% block head %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock head %}
+
 {% block content %}
 <div class="row">
     <div class="col-md-6">
@@ -16,6 +20,8 @@
                 <label>Text</label>
                 <textarea name="text" class="form-control" rows="6" required></textarea>
             </div>
+
+            <div class="g-recaptcha" data-sitekey="6LeQ0DQUAAAAAOlcVB49WzTC4-XqpY196xz0uQY5"></div>
 
             <button type="submit" class="btn btn-success">Submit</button>
         </form>

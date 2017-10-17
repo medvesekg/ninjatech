@@ -50,5 +50,89 @@
 {% block script %}
 <script>
 
+    /* Slide in animation for topics */
+    var topics = document.getElementsByClassName("single-topic");
+
+    if(topics[0]) {
+
+        topics[0].classList.add('fade-in');
+
+        var i = 1;
+        var animate = setInterval (function() {
+
+            topics[i].classList.add("fade-in");
+
+            i++;
+
+            if (i >= topics.length) {
+
+                clearInterval(animate);
+
+            }
+
+
+
+        }, 250);
+
+    }
+    /* Sets the height of body according to number of topics */
+
+    $("body").css("min-height", $(window).height() + 50 * {{number_of_topics}} + "px" )
+
+
+
+     /************/
+    /* Code for latest comment popup */
+    /*************/
+
+    /* Variables used across multiple functions*/
+    var timeout;
+    var comment_user;
+    var comment_content;
+
+    /* If user holds the cursor still for 0.5s on a topic show the popup */
+    $(".single-topic").on("mousemove", function(e) {
+
+        /* Stop the timeout if cursor moves */
+        clearTimeout(timeout);
+
+        /* Position the popup to the cursor positions */
+        $(".latest-comment-popup").css("left", e.pageX + "px");
+        $(".latest-comment-popup").css("top", e.pageY - 170 + "px");
+
+        /* Hide the popup if cursor moves */
+        $(".latest-comment-popup").removeClass("visible");
+
+        /*  If the cursor is still for 0.5s show the popup and fill it with data*/
+        timeout = setTimeout(function(){
+
+                $("#latestCommentContent").html(comment_content);
+                $("#latestCommentUser").html(comment_user);
+
+                $(".latest-comment-popup").addClass("visible");
+
+        }, 500);
+    });
+
+    /* Each time users cursor enters a topic load the correct data*/
+    $(".single-topic").on("mouseenter", function() {
+
+        /* Make the ajax call and save the data in global variables*/
+        topic_id = $(this).data("topic_id");
+        $.getJSON("/ajax/getLatestComment/" + topic_id, function(data) {
+            comment_user = data.email;
+            comment_content = data.content;
+
+
+        });
+
+    });
+
+    /* If the mouse cursor leaves the topic then hide the popup and stop the timeout */
+    $(".single-topic").on("mouseout", function() {
+        clearTimeout(timeout);
+        $(".latest-comment-popup").removeClass("visible");
+    })
+
 </script>
 {% endblock script %}

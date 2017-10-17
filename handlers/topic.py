@@ -1,3 +1,5 @@
+import os
+
 from handlers.base import BaseHandler
 
 from models.topic import Topic
@@ -9,6 +11,10 @@ from models.comment import Comment
 from classes.CSRF import CSRF
 from classes.CustomUser import CustomUser
 from models.subscription import Subscription
+
+from google.appengine.api import urlfetch
+from urllib import urlencode
+import json
 
 class TopicAdd(BaseHandler):
     def get(self):
@@ -35,6 +41,20 @@ class TopicAdd(BaseHandler):
 
         if not CSRF.validate_token(self.request.get("csrf_token")):
             return self.write("CSRF fail")
+
+        # Validate recaptcha
+        payload = {'secret': os.environ.get("RECAPTCHA_KEY"),
+                   'response': self.request.get("g-recaptcha-response"),
+                   }
+
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        result = urlfetch.fetch(url="https://www.google.com/recaptcha/api/siteverify", headers=headers,
+                                payload=urlencode(payload), method=urlfetch.POST)
+
+        recaptcha_response = json.loads(result.content)
+
+        if not recaptcha_response['success']:
+            return self.write("Please verify you are not a robot")
 
         new_topic = Topic(title=title, content=text, user_email=user.email())
         new_topic.put()
