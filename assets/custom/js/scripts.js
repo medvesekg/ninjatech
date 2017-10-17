@@ -38,7 +38,7 @@ $('a[href*="#"]')
     }
   });
 
-/* Delete modal */ 
+/* Delete confirmation modal */ 
 var deleteButtons = document.getElementsByClassName("delete-button")
 var deleteModalForm= document.getElementById("DeleteModal-form")
 
@@ -50,7 +50,12 @@ for (var i = 0; i < deleteButtons.length; i++) {
     }
 }
 
+/* Prevent double submit */
+$("form").submit(function(e) {
 
+    $(this).children("button[type='submit'], input[type='submit']").attr("disabled", true);
+  
+})
 
 var topics = document.getElementsByClassName("single-topic");
 
@@ -85,7 +90,8 @@ $("body").css("min-height", $(window).height() + 30 * $(".single-topic").length)
 
 
 var timeout;
-var topic_id;
+var comment_user;
+var comment_content;
 $(".single-topic").on("mousemove", function(e) {
     clearTimeout(timeout);
     
@@ -93,19 +99,18 @@ $(".single-topic").on("mousemove", function(e) {
     $(".latest-comment-popup").css("top", e.pageY - 170 + "px");
     $(".latest-comment-popup").removeClass("visible"); 
     
-    topic_id = $(this).data("topic_id");
-
+    
+    
+    
     
     timeout = setTimeout(function(){
        
-        
-        $.getJSON("/ajax/getLatestComment/" + topic_id, function(data) {
            
              
-            $("#latestCommentContent").html(data.content);
-            $("#latestCommentUser").html(data.email);
+            $("#latestCommentContent").html(comment_content);
+            $("#latestCommentUser").html(comment_user);
             
-        });
+        
         
         
         
@@ -114,6 +119,19 @@ $(".single-topic").on("mousemove", function(e) {
         
         
     }, 500);
+});
+
+
+$(".single-topic").on("mouseenter", function() {
+    
+    topic_id = $(this).data("topic_id");
+    $.getJSON("/ajax/getLatestComment/" + topic_id, function(data) {
+        comment_user = data.email;
+        comment_content = data.content;
+      
+    
+    });
+    
 });
 
 $(".single-topic").on("mouseout", function() {
